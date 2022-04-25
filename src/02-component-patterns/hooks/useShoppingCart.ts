@@ -14,17 +14,19 @@ export const useShoppingCart = () => {
     product: Product;
   }) => {
     setShoppingCart((prevState) => {
-      const productIntCart: ProductInCart = prevState[product.id] || {
-        ...product,
-        count: 0,
-      };
-
-      if (Math.max(0, productIntCart.count + count) > 0) {
-        productIntCart.count += count;
-        return { ...prevState, [product.id]: productIntCart };
+      console.log(prevState);
+      if (count === 0) {
+        const { [product.id]: toDelete, ...rest } = prevState;
+        return rest;
       }
-      const { [product.id]: _, ...newState } = prevState;
-      return newState;
+
+      return {
+        ...prevState,
+        [product.id]: {
+          count,
+          ...product,
+        },
+      };
     });
   };
 
